@@ -12,4 +12,14 @@ int main() {
     for(auto& name : names) {
         std::cout << name << "\t" << std::endl;
     }
+
+    std::vector<int> numbers = {-3, -2, -1, 0, 1, 2, 3, 4};
+    std::vector<int> evens;
+
+    std::ranges::copy_if(
+        numbers,                           // input range
+        std::back_inserter(evens),         // output iterator
+        [](int abs_val) { return abs_val % 2 == 0; },  // predicate on projected value
+        [](int x) { return std::abs(x); }              // projection
+    );
 }

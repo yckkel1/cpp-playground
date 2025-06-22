@@ -36,3 +36,21 @@ void PeopleAnalytics::get_age_grouped_names_helper(std::map<std::string, std::ve
     group_map[group_name] = std::vector<std::string> (names_filtered_by_age.begin(), names_filtered_by_age.end());
     std::ranges::sort(group_map[group_name]);
 }
+
+std::vector<std::string> PeopleAnalytics::get_names_with_descending_heights(int n) const {
+    std::vector<const std::unique_ptr<People>*> filtered_people;
+
+    for(const auto& p : people_arr) {
+        if(p->get_age() >= n) {
+            filtered_people.push_back(&p);
+        }
+    }
+    auto custom_sort = [](const std::unique_ptr<People>* pt1, const std::unique_ptr<People>* pt2) {
+        return (*pt1)->get_height() > (*pt2)->get_height();
+    };
+    std::ranges::sort(filtered_people, custom_sort);
+    auto names = filtered_people | std::views::transform([](const std::unique_ptr<People>* pt1) {
+        return (*pt1)->get_name();
+    });
+    return std::vector<std::string>(names.begin(), names.end());
+}
