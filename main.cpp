@@ -1,5 +1,8 @@
 #include "include/people_analytics.hpp"
 #include <iostream>
+#include <map>
+#include "time_slot.hpp"
+#include <unordered_map>
 
 int main() {
 
@@ -22,4 +25,24 @@ int main() {
         [](int abs_val) { return abs_val % 2 == 0; },  // predicate on projected value
         [](int x) { return std::abs(x); }              // projection
     );
+
+    std::map<TimeSlot, int> time_slot_map;
+    time_slot_map[{9, 10}] = 1;
+    time_slot_map[{11, 13}] = 4;
+    time_slot_map[{9, 11}] = 2;
+    time_slot_map[{10, 11}] = 3;
+    for(auto& [key, val] : time_slot_map) {
+        std::cout << "start time : " << key.start_time << " end time : " << key.end_time 
+        << " val : " << val << std::endl;
+    }
+    std::cout << std::endl;
+    std::unordered_map<TimeSlot, int, TimeSlotHasher> time_slot_map_2;
+    time_slot_map_2[{9, 10}] = 1;
+    time_slot_map_2[{11, 13}] = 4;
+    time_slot_map_2[{9, 11}] = 2;
+    time_slot_map_2[{10, 11}] = 3;
+    for(auto& [key, val] : time_slot_map_2) {
+        std::cout << "start time : " << key.start_time << " end time : " << key.end_time 
+        << " val : " << val << std::endl;
+    }
 }
